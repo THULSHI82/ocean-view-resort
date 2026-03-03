@@ -57,7 +57,7 @@
     </script>
     <% } %>
 
-    <form method="post" action="login.jsp">
+    <form method="post" action="${pageContext.request.contextPath}/login">
         <label>
             <input type="text" name="username" placeholder="Username" required />
         </label>
