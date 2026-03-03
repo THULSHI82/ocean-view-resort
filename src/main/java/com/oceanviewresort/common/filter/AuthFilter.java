@@ -6,7 +6,7 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
-@WebFilter("/dashboard.jsp")
+@WebFilter({"/dashboard", "/dashboard.jsp"})
 public class AuthFilter implements Filter {
 
     @Override
