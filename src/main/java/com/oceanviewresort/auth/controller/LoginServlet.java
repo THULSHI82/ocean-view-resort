@@ -20,9 +20,30 @@ public class LoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
+
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+
+            String error = (String) session.getAttribute("error");
+            String success = (String) session.getAttribute("loginSuccess");
+
+            if (error != null) {
+                request.setAttribute("error", error);
+                session.removeAttribute("error");
+            }
+
+            if (success != null) {
+                request.setAttribute("success", success);
+                session.removeAttribute("loginSuccess");
+            }
+        }
+
+        request.getRequestDispatcher("/login.jsp")
+                .forward(request, response);
     }
 
     @Override
@@ -36,15 +57,19 @@ public class LoginServlet extends HttpServlet {
         User user = authService.login(username, password);
 
         if (user != null) {
+
             HttpSession session = request.getSession();
             session.setAttribute("loggedUser", user);
-            request.setAttribute("success", "Login successful!");
-            request.getRequestDispatcher("/login.jsp")
-                    .forward(request, response);
+            session.setAttribute("loginSuccess", "Login successful!");
+
+            response.sendRedirect(request.getContextPath() + "/login");
+
         } else {
-            request.setAttribute("error", "Invalid username or password.");
-            request.getRequestDispatcher("/login.jsp")
-                    .forward(request, response);
+
+            request.getSession().setAttribute("error",
+                    "Invalid username or password.");
+
+            response.sendRedirect(request.getContextPath() + "/login");
         }
     }
 }
