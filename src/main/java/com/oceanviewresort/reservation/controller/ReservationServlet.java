@@ -64,6 +64,13 @@ public class ReservationServlet extends HttpServlet {
             LocalDate checkIn = LocalDate.parse(request.getParameter("checkIn"));
             LocalDate checkOut = LocalDate.parse(request.getParameter("checkOut"));
 
+            String dateError = reservationService.validateReservationDates(checkIn, checkOut);
+            if (dateError != null) {
+                request.getSession().setAttribute("error", dateError);
+                response.sendRedirect(request.getContextPath() + "/reservation");
+                return;
+            }
+
             boolean created = reservationService.createReservation(
                     customerName,
                     customerPhone,
@@ -76,7 +83,10 @@ public class ReservationServlet extends HttpServlet {
             if (created) {
                 request.getSession().setAttribute("success", "Reservation created successfully!");
             } else {
-                request.getSession().setAttribute("error", "Failed to create reservation. Try again.");
+                request.getSession().setAttribute(
+                        "error",
+                        "Selected room is not available for the chosen dates. Please choose another room or date range."
+                );
             }
 
         } catch (Exception ex) {
