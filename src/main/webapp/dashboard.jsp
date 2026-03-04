@@ -262,10 +262,7 @@
 
         <% switch (currentPage) {
             case "reservation" -> { %>
-        <h3>Reservations</h3>
-        <p style="color: var(--muted); margin-top:6px;">
-            Reservation management content will appear here (Add / Search / View).
-        </p>
+        <jsp:include page="/WEB-INF/views/reservation/add-reservation.jsp" />
 
         <%
             } case "billing" -> { %>
