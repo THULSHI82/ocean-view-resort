@@ -8,6 +8,7 @@ import com.oceanviewresort.reservation.model.Room;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 
 public class ReservationService {
 
@@ -84,5 +85,13 @@ public class ReservationService {
         if (checkIn == null || checkOut == null) return "Please select valid dates.";
         if (!checkOut.isAfter(checkIn)) return "Check-out date must be after check-in date.";
         return null;
+    }
+
+    public List<Map<String, Object>> getAllReservations() {
+        return reservationDAO.getAllReservations();
+    }
+
+    public List<Map<String, Object>> searchReservations(String keyword, String fromDate, String toDate) {
+        return reservationDAO.searchReservations(keyword, fromDate, toDate);
     }
 }
