@@ -1,0 +1,97 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="java.util.*" %>
+
+<%
+    List<Map<String, Object>> reservations =
+            (List<Map<String, Object>>) request.getAttribute("reservations");
+
+    String q = (String) request.getAttribute("q");
+    String from = (String) request.getAttribute("from");
+    String to = (String) request.getAttribute("to");
+%>
+
+<div style="display:flex;align-items:center;justify-content:space-between;">
+    <div>
+        <h3 style="margin:0;">View Reservations</h3>
+        <p style="color:#64748b;margin:6px 0 0;">Search and manage existing bookings.</p>
+    </div>
+    <a href="${pageContext.request.contextPath}/reservation"
+       style="text-decoration:none;padding:10px 12px;border-radius:12px;border:1px solid #e5e7eb;color:#111827;font-weight:700;">
+        ➕ Add Reservation
+    </a>
+</div>
+
+<form method="get" action="${pageContext.request.contextPath}/reservation"
+      style="margin-top:14px;display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px;align-items:end;">
+
+    <input type="hidden" name="view" value="list"/>
+
+    <div>
+        <label style="display:block;font-size:12px;color:#64748b;margin-bottom:6px;">Search</label>
+        <input type="text" name="q" value="<%= q == null ? "" : q %>"
+               placeholder="Customer name / phone / room number"
+               style="width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;">
+    </div>
+
+    <div>
+        <label style="display:block;font-size:12px;color:#64748b;margin-bottom:6px;">From</label>
+        <input type="date" name="from" value="<%= from == null ? "" : from %>"
+               style="width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;">
+    </div>
+
+    <div>
+        <label style="display:block;font-size:12px;color:#64748b;margin-bottom:6px;">To</label>
+        <input type="date" name="to" value="<%= to == null ? "" : to %>"
+               style="width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;">
+    </div>
+
+    <button type="submit"
+            style="padding:12px 16px;border:none;border-radius:12px;background:#111827;color:#fff;font-weight:800;cursor:pointer;">
+        Search
+    </button>
+</form>
+
+<div style="margin-top:16px;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden;background:#fff;">
+    <table style="width:100%;border-collapse:collapse;">
+        <thead style="background:#f8fafc;">
+        <tr>
+            <th style="text-align:left;padding:12px;font-size:12px;color:#64748b;">ID</th>
+            <th style="text-align:left;padding:12px;font-size:12px;color:#64748b;">Customer</th>
+            <th style="text-align:left;padding:12px;font-size:12px;color:#64748b;">Room</th>
+            <th style="text-align:left;padding:12px;font-size:12px;color:#64748b;">Check-in</th>
+            <th style="text-align:left;padding:12px;font-size:12px;color:#64748b;">Check-out</th>
+            <th style="text-align:left;padding:12px;font-size:12px;color:#64748b;">Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%
+            if (reservations == null || reservations.isEmpty()) {
+        %>
+        <tr>
+            <td colspan="6" style="padding:16px;color:#64748b;">No reservations found.</td>
+        </tr>
+        <%
+        } else {
+            for (Map<String, Object> r : reservations) {
+        %>
+        <tr style="border-top:1px solid #e5e7eb;">
+            <td style="padding:12px;"><%= r.get("id") %></td>
+            <td style="padding:12px;">
+                <strong><%= r.get("customer_name") %></strong><br/>
+                <span style="color:#64748b;font-size:12px;"><%= r.get("customer_phone") %></span>
+            </td>
+            <td style="padding:12px;">
+                Room <strong><%= r.get("room_number") %></strong><br/>
+                <span style="color:#64748b;font-size:12px;"><%= r.get("room_type") %></span>
+            </td>
+            <td style="padding:12px;"><%= r.get("check_in") %></td>
+            <td style="padding:12px;"><%= r.get("check_out") %></td>
+            <td style="padding:12px;">LKR <%= r.get("total_price") %></td>
+        </tr>
+        <%
+                }
+            }
+        %>
+        </tbody>
+    </table>
+</div>
