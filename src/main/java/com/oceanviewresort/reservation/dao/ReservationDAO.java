@@ -200,4 +200,21 @@ public class ReservationDAO {
 
         return list;
     }
+
+    public boolean deleteReservation(int reservationId) {
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+
+            String sql = "DELETE FROM reservations WHERE id = ?";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, reservationId);
+
+            int affected = stmt.executeUpdate();
+            return affected > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
