@@ -6,6 +6,11 @@
     if (currentPage == null || currentPage.isBlank()) currentPage = "home";
 %>
 
+<%
+    String subPage = (String) request.getAttribute("subPage");
+    if (subPage == null || subPage.isBlank()) subPage = "add";
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -225,9 +230,14 @@
             🏠 Home
         </a>
 
-        <a class="nav-link <%= "reservation".equals(currentPage) ? "active" : "" %>"
+        <a class="nav-link <%= "reservation".equals(currentPage) && !"list".equals(subPage) ? "active" : "" %>"
            href="${pageContext.request.contextPath}/reservation">
-            🗓️ Reservations
+            ➕ Add Reservation
+        </a>
+
+        <a class="nav-link <%= "reservation".equals(currentPage) && "list".equals(subPage) ? "active" : "" %>"
+           href="${pageContext.request.contextPath}/reservation?view=list">
+            📋 View Reservations
         </a>
 
         <a class="nav-link <%= "billing".equals(currentPage) ? "active" : "" %>"
@@ -262,7 +272,12 @@
 
         <% switch (currentPage) {
             case "reservation" -> { %>
+
+        <% if ("list".equals(subPage)) { %>
+        <jsp:include page="/WEB-INF/views/reservation/view-reservations.jsp" />
+        <% } else { %>
         <jsp:include page="/WEB-INF/views/reservation/add-reservation.jsp" />
+        <% } %>
 
         <%
             } case "billing" -> { %>
