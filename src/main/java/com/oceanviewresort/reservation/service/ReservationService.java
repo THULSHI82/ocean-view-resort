@@ -94,4 +94,8 @@ public class ReservationService {
     public List<Map<String, Object>> searchReservations(String keyword, String fromDate, String toDate) {
         return reservationDAO.searchReservations(keyword, fromDate, toDate);
     }
+
+    public boolean deleteReservation(int reservationId) {
+        return reservationDAO.deleteReservation(reservationId);
+    }
 }
