@@ -53,6 +53,16 @@ public class ReservationService {
             return false;
         }
 
+        boolean available = reservationDAO.isRoomAvailable(
+                roomId,
+                checkIn.toString(),
+                checkOut.toString()
+        );
+
+        if (!available) {
+            return false; // room already booked in that date range
+        }
+
         double totalPrice = calculateTotalPrice(roomId, checkIn, checkOut);
 
         int customerId = customerDAO.createCustomer(customerName, customerPhone, customerEmail);
@@ -68,5 +78,11 @@ public class ReservationService {
                 checkOut.toString(),
                 totalPrice
         );
+    }
+
+    public String validateReservationDates(LocalDate checkIn, LocalDate checkOut) {
+        if (checkIn == null || checkOut == null) return "Please select valid dates.";
+        if (!checkOut.isAfter(checkIn)) return "Check-out date must be after check-in date.";
+        return null;
     }
 }
