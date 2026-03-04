@@ -1,6 +1,7 @@
 package com.oceanviewresort.reservation.service;
 
 import com.oceanviewresort.reservation.dao.ReservationDAO;
+import com.oceanviewresort.reservation.dao.CustomerDAO;
 import com.oceanviewresort.reservation.dao.RoomDAO;
 import com.oceanviewresort.reservation.model.Room;
 
@@ -12,6 +13,7 @@ public class ReservationService {
 
     private final RoomDAO roomDAO = new RoomDAO();
     private final ReservationDAO reservationDAO = new ReservationDAO();
+    private final CustomerDAO customerDAO = new CustomerDAO();
 
     public List<Room> getAllRooms() {
         return roomDAO.getAllRooms();
@@ -39,13 +41,25 @@ public class ReservationService {
     }
 
     public boolean createReservation(
-            int customerId,
+            String customerName,
+            String customerPhone,
+            String customerEmail,
             int roomId,
             LocalDate checkIn,
             LocalDate checkOut
     ) {
 
+        if (customerName == null || customerName.isBlank()) {
+            return false;
+        }
+
         double totalPrice = calculateTotalPrice(roomId, checkIn, checkOut);
+
+        int customerId = customerDAO.createCustomer(customerName, customerPhone, customerEmail);
+
+        if (customerId == -1) {
+            return false;
+        }
 
         return reservationDAO.createReservation(
                 customerId,
