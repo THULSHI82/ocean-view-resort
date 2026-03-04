@@ -81,6 +81,29 @@ public class ReservationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String action = request.getParameter("action");
+        if ("delete".equals(action)) {
+
+            try {
+                int reservationId = Integer.parseInt(request.getParameter("id"));
+
+                boolean deleted = reservationService.deleteReservation(reservationId);
+
+                if (deleted) {
+                    request.getSession().setAttribute("success", "Reservation deleted successfully.");
+                } else {
+                    request.getSession().setAttribute("error", "Failed to delete reservation.");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                request.getSession().setAttribute("error", "Invalid reservation id.");
+            }
+
+            response.sendRedirect(request.getContextPath() + "/reservation?view=list");
+            return;
+        }
+
         try {
             // customer fields
             String customerName = request.getParameter("customerName");
