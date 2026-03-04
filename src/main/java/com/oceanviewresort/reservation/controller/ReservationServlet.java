@@ -64,11 +64,14 @@ public class ReservationServlet extends HttpServlet {
             LocalDate checkIn = LocalDate.parse(request.getParameter("checkIn"));
             LocalDate checkOut = LocalDate.parse(request.getParameter("checkOut"));
 
-            // TODO: next step we will insert customer table properly
-            // For now, we will use a temporary customerId = 1 (until we build CustomerDAO)
-            int customerId = 1;
-
-            boolean created = reservationService.createReservation(customerId, roomId, checkIn, checkOut);
+            boolean created = reservationService.createReservation(
+                    customerName,
+                    customerPhone,
+                    customerEmail,
+                    roomId,
+                    checkIn,
+                    checkOut
+            );
 
             if (created) {
                 request.getSession().setAttribute("success", "Reservation created successfully!");
