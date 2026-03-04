@@ -61,6 +61,7 @@
             <th style="text-align:left;padding:12px;font-size:12px;color:#64748b;">Check-in</th>
             <th style="text-align:left;padding:12px;font-size:12px;color:#64748b;">Check-out</th>
             <th style="text-align:left;padding:12px;font-size:12px;color:#64748b;">Total</th>
+            <th style="text-align:left;padding:12px;font-size:12px;color:#64748b;">Action</th>
         </tr>
         </thead>
         <tbody>
@@ -87,6 +88,21 @@
             <td style="padding:12px;"><%= r.get("check_in") %></td>
             <td style="padding:12px;"><%= r.get("check_out") %></td>
             <td style="padding:12px;">LKR <%= r.get("total_price") %></td>
+
+            <td style="padding:12px;">
+                <form id="deleteForm-<%= r.get("id") %>"
+                      method="post"
+                      action="${pageContext.request.contextPath}/reservation"
+                      style="margin:0;display:inline;">
+                    <input type="hidden" name="action" value="delete"/>
+                    <input type="hidden" name="id" value="<%= r.get("id") %>"/>
+                    <button type="button"
+                            onclick="confirmDelete(<%= r.get("id") %>)"
+                            style="padding:8px 10px;border-radius:10px;border:1px solid #fecaca;background:#fee2e2;color:#991b1b;font-weight:800;cursor:pointer;">
+                        Delete
+                    </button>
+                </form>
+            </td>
         </tr>
         <%
                 }
@@ -95,3 +111,11 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    function confirmDelete(reservationId){
+        if(confirm("Are you sure you want to delete this reservation?")){
+            document.getElementById("deleteForm-" + reservationId).submit();
+        }
+    }
+</script>
