@@ -6,6 +6,11 @@
     if (currentPage == null || currentPage.isBlank()) currentPage = "home";
 %>
 
+<%
+    String subPage = (String) request.getAttribute("subPage");
+    if (subPage == null || subPage.isBlank()) subPage = "add";
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -225,9 +230,14 @@
             🏠 Home
         </a>
 
-        <a class="nav-link <%= "reservation".equals(currentPage) ? "active" : "" %>"
-           href="${pageContext.request.contextPath}/dashboard?page=reservation">
-            🗓️ Reservations
+        <a class="nav-link <%= "reservation".equals(currentPage) && !"list".equals(subPage) ? "active" : "" %>"
+           href="${pageContext.request.contextPath}/reservation">
+            ➕ Add Reservation
+        </a>
+
+        <a class="nav-link <%= "reservation".equals(currentPage) && "list".equals(subPage) ? "active" : "" %>"
+           href="${pageContext.request.contextPath}/reservation?view=list">
+            📋 View Reservations
         </a>
 
         <a class="nav-link <%= "billing".equals(currentPage) ? "active" : "" %>"
@@ -262,10 +272,12 @@
 
         <% switch (currentPage) {
             case "reservation" -> { %>
-        <h3>Reservations</h3>
-        <p style="color: var(--muted); margin-top:6px;">
-            Reservation management content will appear here (Add / Search / View).
-        </p>
+
+        <% if ("list".equals(subPage)) { %>
+        <jsp:include page="/WEB-INF/views/reservation/view-reservations.jsp" />
+        <% } else { %>
+        <jsp:include page="/WEB-INF/views/reservation/add-reservation.jsp" />
+        <% } %>
 
         <%
             } case "billing" -> { %>
