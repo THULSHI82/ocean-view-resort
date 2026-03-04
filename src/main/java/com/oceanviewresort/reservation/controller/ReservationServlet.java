@@ -33,7 +33,20 @@ public class ReservationServlet extends HttpServlet {
         request.setAttribute("page", "reservation");
         request.setAttribute("subPage", "add");
 
+        String error = (String) request.getSession().getAttribute("error");
+        String success = (String) request.getSession().getAttribute("success");
+
+        if (error != null) {
+            request.setAttribute("error", error);
+            request.getSession().removeAttribute("error");
+        }
+        if (success != null) {
+            request.setAttribute("success", success);
+            request.getSession().removeAttribute("success");
+        }
+
         request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
+
     }
 
     @Override
