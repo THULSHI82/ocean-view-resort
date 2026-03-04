@@ -226,7 +226,7 @@
         </a>
 
         <a class="nav-link <%= "reservation".equals(currentPage) ? "active" : "" %>"
-           href="${pageContext.request.contextPath}/dashboard?page=reservation">
+           href="${pageContext.request.contextPath}/reservation">
             🗓️ Reservations
         </a>
 
