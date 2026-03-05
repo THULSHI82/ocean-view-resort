@@ -12,21 +12,22 @@ import java.io.IOException;
 @WebServlet("/billing")
 public class BillingServlet extends HttpServlet {
 
-    private BillingService billingService = new BillingService();
+    private final BillingService billingService = new BillingService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // PRG messages (optional but very stable UX)
-        String error = (String) request.getSession().getAttribute("error");
+        // Move billing messages (PRG style)
+        String error = (String) request.getSession().getAttribute("billingError");
         if (error != null) {
             request.setAttribute("error", error);
-            request.getSession().removeAttribute("error");
+            request.getSession().removeAttribute("billingError");
         }
 
         String reservationIdParam = request.getParameter("reservationId");
 
+        // If user submitted an ID
         if (reservationIdParam != null && !reservationIdParam.isBlank()) {
             try {
                 int reservationId = Integer.parseInt(reservationIdParam);
@@ -34,13 +35,19 @@ public class BillingServlet extends HttpServlet {
                 Billing bill = billingService.calculateBill(reservationId);
 
                 if (bill == null) {
-                    request.setAttribute("error", "Reservation ID not found. Please check and try again.");
+                    // store in session then redirect (PRG avoids weird refresh states)
+                    request.getSession().setAttribute("billingError",
+                            "Reservation ID not found. Please check and try again.");
+                    response.sendRedirect(request.getContextPath() + "/billing");
+                    return;
                 } else {
                     request.setAttribute("bill", bill);
                 }
 
             } catch (NumberFormatException e) {
-                request.setAttribute("error", "Invalid Reservation ID format.");
+                request.getSession().setAttribute("billingError", "Invalid Reservation ID format.");
+                response.sendRedirect(request.getContextPath() + "/billing");
+                return;
             }
         }
 
