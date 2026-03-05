@@ -146,15 +146,20 @@ public class ReservationDAO {
                    rm.room_type,
                    r.check_in,
                    r.check_out,
-                   r.total_price
+                   r.total_price,
+                   r.payment_status,
+                   r.payment_method
             FROM reservations r
             JOIN customers c ON r.customer_id = c.id
             JOIN rooms rm ON r.room_id = rm.id
-            WHERE (c.name LIKE ? OR c.phone LIKE ? OR rm.room_number LIKE ?)
-              AND (? IS NULL OR r.check_in >= ?)
-              AND (? IS NULL OR r.check_out <= ?)
+            WHERE (CAST(r.id AS CHAR) LIKE ?
+                   OR c.name LIKE ?
+                   OR c.phone LIKE ?
+                   OR rm.room_number LIKE ?)
+            AND (r.check_in >= COALESCE(?, r.check_in))
+            AND (r.check_out <= COALESCE(?, r.check_out))
             ORDER BY r.id DESC
-        """;
+            """;
 
             PreparedStatement stmt = connection.prepareStatement(sql);
 
@@ -163,23 +168,18 @@ public class ReservationDAO {
             stmt.setString(1, like);
             stmt.setString(2, like);
             stmt.setString(3, like);
+            stmt.setString(4, like);
 
-            // fromDate filter
             if (fromDate == null || fromDate.isBlank()) {
-                stmt.setNull(4, java.sql.Types.DATE);
                 stmt.setNull(5, java.sql.Types.DATE);
             } else {
-                stmt.setDate(4, java.sql.Date.valueOf(fromDate));
                 stmt.setDate(5, java.sql.Date.valueOf(fromDate));
             }
 
-            // toDate filter
             if (toDate == null || toDate.isBlank()) {
                 stmt.setNull(6, java.sql.Types.DATE);
-                stmt.setNull(7, java.sql.Types.DATE);
             } else {
                 stmt.setDate(6, java.sql.Date.valueOf(toDate));
-                stmt.setDate(7, java.sql.Date.valueOf(toDate));
             }
 
             ResultSet rs = stmt.executeQuery();
@@ -195,6 +195,8 @@ public class ReservationDAO {
                 row.put("check_in", rs.getDate("check_in"));
                 row.put("check_out", rs.getDate("check_out"));
                 row.put("total_price", rs.getDouble("total_price"));
+                row.put("payment_status", rs.getString("payment_status"));
+                row.put("payment_method", rs.getString("payment_method"));
                 list.add(row);
             }
 
