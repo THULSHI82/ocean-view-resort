@@ -58,4 +58,8 @@ public class BillingService {
 
         return bill;
     }
+
+    public boolean settleBill(int reservationId, String paymentMethod) {
+        return billingDAO.settleBill(reservationId, paymentMethod);
+    }
 }

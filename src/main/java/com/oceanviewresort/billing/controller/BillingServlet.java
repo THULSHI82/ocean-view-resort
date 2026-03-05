@@ -25,6 +25,12 @@ public class BillingServlet extends HttpServlet {
             request.getSession().removeAttribute("billingError");
         }
 
+        String success = (String) request.getSession().getAttribute("billingSuccess");
+        if (success != null) {
+            request.setAttribute("success", success);
+            request.getSession().removeAttribute("billingSuccess");
+        }
+
         String reservationIdParam = request.getParameter("reservationId");
 
         // If user submitted an ID
@@ -53,5 +59,41 @@ public class BillingServlet extends HttpServlet {
 
         request.setAttribute("page", "billing");
         request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String reservationIdParam = request.getParameter("reservationId");
+        String method = request.getParameter("paymentMethod");
+
+        if (reservationIdParam == null || reservationIdParam.isBlank() ||
+                method == null || method.isBlank()) {
+
+            request.getSession().setAttribute("billingError", "Please select a payment method.");
+            response.sendRedirect(request.getContextPath() + "/billing");
+            return;
+        }
+
+        try {
+            int reservationId = Integer.parseInt(reservationIdParam);
+
+            boolean settled = billingService.settleBill(reservationId, method);
+
+            if (settled) {
+                request.getSession().setAttribute("billingSuccess", "Bill settled successfully (" + method + ").");
+            } else {
+                request.getSession().setAttribute("billingError", "Failed to settle bill. Please try again.");
+            }
+
+            // PRG redirect to avoid form resubmission
+            response.sendRedirect(request.getContextPath() + "/billing?reservationId=" + reservationId);
+            return;
+
+        } catch (NumberFormatException e) {
+            request.getSession().setAttribute("billingError", "Invalid Reservation ID format.");
+            response.sendRedirect(request.getContextPath() + "/billing");
+        }
     }
 }

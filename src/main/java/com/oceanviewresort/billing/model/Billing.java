@@ -17,6 +17,8 @@ public class Billing {
     private java.math.BigDecimal serviceCharge;
     private java.math.BigDecimal tax;
     private java.math.BigDecimal grandTotal;
+    private String paymentMethod;
+    private String paymentStatus;
 
     public int getReservationId() {
         return reservationId;
@@ -80,6 +82,22 @@ public class Billing {
 
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
     public java.math.BigDecimal getSubTotal() { return subTotal; }
