@@ -102,7 +102,9 @@
     <form class="billForm" method="get" action="${pageContext.request.contextPath}/billing">
       <div>
         <label class="billLabel">Reservation ID</label>
-        <input class="billInput" type="number" name="reservationId" placeholder="e.g., 12" required>
+        <label>
+          <input class="billInput" type="number" name="reservationId" placeholder="e.g., 12" required>
+        </label>
       </div>
       <button class="btnPrimary" type="submit">Generate Bill</button>
     </form>
