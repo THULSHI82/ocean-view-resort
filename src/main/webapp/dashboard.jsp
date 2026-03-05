@@ -209,6 +209,44 @@
             box-shadow:0 8px 18px rgba(0,0,0,0.08);
         }
 
+        .infoGrid{
+            margin-top:20px;
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:16px;
+        }
+
+        .infoCard{
+            background:#fff;
+            border:1px solid #e5e7eb;
+            border-radius:14px;
+            padding:16px;
+        }
+
+        .infoCard h4{
+            margin:0 0 8px 0;
+        }
+
+        .infoCard p{
+            color:#64748b;
+            font-size:14px;
+            line-height:1.6;
+        }
+
+        .infoCard ul{
+            margin:0;
+            padding-left:18px;
+            color:#64748b;
+            line-height:1.7;
+            font-size:14px;
+        }
+
+        @media(max-width:900px){
+            .infoGrid{
+                grid-template-columns:1fr;
+            }
+        }
+
         @media(max-width:1100px){
             .stats{ grid-template-columns:1fr; }
         }
@@ -381,6 +419,21 @@
             <a class="action" href="${pageContext.request.contextPath}/reservation?view=list">📋 View Reservations</a>
             <a class="action" href="${pageContext.request.contextPath}/billing">🧾 Billing</a>
             <a class="action" href="${pageContext.request.contextPath}/dashboard?page=help">❓ Help</a>
+        </div>
+
+        <div class="infoGrid">
+
+            <div class="infoCard">
+                <h4>Staff Operational Guidelines</h4>
+                <ul>
+                    <li>Use the <strong>Add Reservation</strong> section to create new bookings.</li>
+                    <li>Check room availability before confirming reservations.</li>
+                    <li>Generate invoices from the reservation list once a guest checks out.</li>
+                    <li>Use the billing module to settle payments and record the payment method.</li>
+                    <li>Refer to the Help section if assistance is needed for system usage.</li>
+                </ul>
+            </div>
+
         </div>
         <%
                 }
