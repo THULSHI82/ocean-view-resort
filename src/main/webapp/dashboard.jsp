@@ -245,9 +245,9 @@
             💳 Billing
         </a>
 
-        <a class="nav-link <%= "reports".equals(currentPage) ? "active" : "" %>"
-           href="${pageContext.request.contextPath}/dashboard?page=reports">
-            📊 Reports
+        <a class="nav-link <%= "help".equals(currentPage) ? "active" : "" %>"
+           href="${pageContext.request.contextPath}/dashboard?page=help">
+            ❓ Help
         </a>
     </div>
 
@@ -285,11 +285,53 @@
         <jsp:include page="/WEB-INF/views/billing/view-bill.jsp" />
 
         <%
-            } case "reports" -> { %>
-        <h3>Reports</h3>
+            } case "help" -> { %>
+
+        <h3>Help & Guidelines</h3>
         <p style="color: var(--muted); margin-top:6px;">
-            Reports and analytics will appear here.
+            Quick guide for new staff members to use the Ocean View Resort system.
         </p>
+
+        <div style="margin-top:14px;display:grid;grid-template-columns:1fr;gap:12px;">
+
+            <div style="border:1px solid var(--border);border-radius:14px;padding:14px;background:#fff;">
+                <strong>1) Login</strong>
+                <div style="color:var(--muted);margin-top:6px;font-size:13px;line-height:1.6;">
+                    Enter your staff username and password. If credentials are invalid, an error message will appear.
+                </div>
+            </div>
+
+            <div style="border:1px solid var(--border);border-radius:14px;padding:14px;background:#fff;">
+                <strong>2) Add Reservation</strong>
+                <div style="color:var(--muted);margin-top:6px;font-size:13px;line-height:1.6;">
+                    Go to <b>Reservations</b> and fill customer details, choose a room, then select check-in and check-out dates.
+                    The system prevents overlapping bookings automatically.
+                </div>
+            </div>
+
+            <div style="border:1px solid var(--border);border-radius:14px;padding:14px;background:#fff;">
+                <strong>3) View / Search Reservations</strong>
+                <div style="color:var(--muted);margin-top:6px;font-size:13px;line-height:1.6;">
+                    Use search to filter by Reservation ID, customer name, phone, room number, or by date range.
+                </div>
+            </div>
+
+            <div style="border:1px solid var(--border);border-radius:14px;padding:14px;background:#fff;">
+                <strong>4) Billing & Payments</strong>
+                <div style="color:var(--muted);margin-top:6px;font-size:13px;line-height:1.6;">
+                    Generate invoices from the reservations list. Settle using Cash/Card.
+                    Once a bill is PAID, the billing button becomes disabled.
+                </div>
+            </div>
+
+            <div style="border:1px solid var(--border);border-radius:14px;padding:14px;background:#fff;">
+                <strong>5) Logout</strong>
+                <div style="color:var(--muted);margin-top:6px;font-size:13px;line-height:1.6;">
+                    Click Logout and confirm to end the session securely.
+                </div>
+            </div>
+
+        </div>
 
         <%
             } default -> { %>
@@ -322,7 +364,7 @@
             <a class="action" href="${pageContext.request.contextPath}/reservation">➕ Add Reservation</a>
             <a class="action" href="${pageContext.request.contextPath}/reservation?view=list">📋 View Reservations</a>
             <a class="action" href="${pageContext.request.contextPath}/dashboard?page=billing">🧾 Generate Bill</a>
-            <a class="action" href="${pageContext.request.contextPath}/dashboard?page=reports">📌 View Reports</a>
+            <a class="action" href="${pageContext.request.contextPath}/dashboard?page=help">❓ Help & Guidelines</a>
         </div>
         <%
                 }
