@@ -26,16 +26,16 @@ public class ReservationServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // 1) Flash messages (PRG: session -> request)
-        String error = (String) request.getSession().getAttribute("error");
-        String success = (String) request.getSession().getAttribute("success");
+        String error = (String) request.getSession().getAttribute("reservationError");
+        String success = (String) request.getSession().getAttribute("reservationSuccess");
 
         if (error != null) {
             request.setAttribute("error", error);
-            request.getSession().removeAttribute("error");
+            request.getSession().removeAttribute("reservationError");
         }
         if (success != null) {
             request.setAttribute("success", success);
-            request.getSession().removeAttribute("success");
+            request.getSession().removeAttribute("reservationSuccess");
         }
 
         // 2) Decide which reservation view to show: add or list
@@ -90,14 +90,14 @@ public class ReservationServlet extends HttpServlet {
                 boolean deleted = reservationService.deleteReservation(reservationId);
 
                 if (deleted) {
-                    request.getSession().setAttribute("success", "Reservation deleted successfully.");
+                    request.getSession().setAttribute("reservationSuccess", "Reservation deleted successfully.");
                 } else {
-                    request.getSession().setAttribute("error", "Failed to delete reservation.");
+                    request.getSession().setAttribute("reservationError", "Failed to delete reservation.");
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
-                request.getSession().setAttribute("error", "Invalid reservation id.");
+                request.getSession().setAttribute("reservationError", "Invalid reservation id.");
             }
 
             response.sendRedirect(request.getContextPath() + "/reservation?view=list");
@@ -117,7 +117,7 @@ public class ReservationServlet extends HttpServlet {
 
             String dateError = reservationService.validateReservationDates(checkIn, checkOut);
             if (dateError != null) {
-                request.getSession().setAttribute("error", dateError);
+                request.getSession().setAttribute("reservationError", dateError);
                 response.sendRedirect(request.getContextPath() + "/reservation");
                 return;
             }
@@ -132,17 +132,17 @@ public class ReservationServlet extends HttpServlet {
             );
 
             if (created) {
-                request.getSession().setAttribute("success", "Reservation created successfully!");
+                request.getSession().setAttribute("reservationSuccess", "Reservation created successfully!");
             } else {
                 request.getSession().setAttribute(
-                        "error",
+                        "reservationError",
                         "Selected room is not available for the chosen dates. Please choose another room or date range."
                 );
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            request.getSession().setAttribute("error", "Invalid input. Please check your details.");
+            request.getSession().setAttribute("reservationError", "Invalid input. Please check your details.");
         }
 
         response.sendRedirect(request.getContextPath() + "/reservation");
