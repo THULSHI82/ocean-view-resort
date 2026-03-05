@@ -281,10 +281,8 @@
 
         <%
             } case "billing" -> { %>
-        <h3>Billing</h3>
-        <p style="color: var(--muted); margin-top:6px;">
-            Billing generation and printing content will appear here.
-        </p>
+
+        <jsp:include page="/WEB-INF/views/billing/view-bill.jsp" />
 
         <%
             } case "reports" -> { %>
