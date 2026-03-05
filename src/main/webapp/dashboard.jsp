@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="com.oceanviewresort.auth.model.User" %>
+<%@ page import="java.util.Map" %>
+
 <%
     User user = (User) session.getAttribute("loggedUser");
     String currentPage = (String) request.getAttribute("page");
@@ -9,6 +11,11 @@
 <%
     String subPage = (String) request.getAttribute("subPage");
     if (subPage == null || subPage.isBlank()) subPage = "add";
+%>
+
+<%
+    Map<String, Object> stats = (Map<String, Object>) request.getAttribute("stats");
+    if (stats == null) stats = new java.util.HashMap<>();
 %>
 
 <!DOCTYPE html>
@@ -151,7 +158,7 @@
         /* Home stats */
         .stats{
             display:grid;
-            grid-template-columns:repeat(3, 1fr);
+            grid-template-columns:repeat(4, 1fr);
             gap:14px;
             margin-top:14px;
         }
@@ -203,6 +210,9 @@
         }
 
         @media(max-width:1100px){
+            .stats{ grid-template-columns:1fr; }
+        }
+        @media(max-width:700px){
             .stats{ grid-template-columns:1fr; }
         }
     </style>
@@ -342,29 +352,35 @@
 
         <div class="stats">
             <div class="stat">
-                <div class="label">Today’s Reservations</div>
-                <div class="value">0</div>
-                <div class="hint">Will update when Reservation module is connected.</div>
+                <div class="label">Total Reservations</div>
+                <div class="value"><%= stats.getOrDefault("reservations", 0) %></div>
+                <div class="hint">All reservations recorded in the system.</div>
             </div>
 
             <div class="stat">
-                <div class="label">Pending Check-ins</div>
-                <div class="value">0</div>
-                <div class="hint">Based on check-in date and status.</div>
+                <div class="label">Active Guests</div>
+                <div class="value"><%= stats.getOrDefault("guests", 0) %></div>
+                <div class="hint">Guests staying today (based on check-in/out dates).</div>
             </div>
 
             <div class="stat">
-                <div class="label">Revenue (Today)</div>
-                <div class="value">LKR 0</div>
-                <div class="hint">Calculated from billing module.</div>
+                <div class="label">Available Rooms</div>
+                <div class="value"><%= stats.getOrDefault("availableRooms", 0) %></div>
+                <div class="hint">Rooms not reserved for today.</div>
+            </div>
+
+            <div class="stat">
+                <div class="label">Total Revenue</div>
+                <div class="value">LKR <%= stats.getOrDefault("revenue", 0) %></div>
+                <div class="hint">Sum of reservation totals (billing-linked).</div>
             </div>
         </div>
 
         <div class="quickActions">
             <a class="action" href="${pageContext.request.contextPath}/reservation">➕ Add Reservation</a>
             <a class="action" href="${pageContext.request.contextPath}/reservation?view=list">📋 View Reservations</a>
-            <a class="action" href="${pageContext.request.contextPath}/dashboard?page=billing">🧾 Generate Bill</a>
-            <a class="action" href="${pageContext.request.contextPath}/dashboard?page=help">❓ Help & Guidelines</a>
+            <a class="action" href="${pageContext.request.contextPath}/billing">🧾 Billing</a>
+            <a class="action" href="${pageContext.request.contextPath}/dashboard?page=help">❓ Help</a>
         </div>
         <%
                 }
