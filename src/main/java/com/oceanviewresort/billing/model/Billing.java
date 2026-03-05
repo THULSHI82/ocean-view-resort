@@ -2,6 +2,7 @@ package com.oceanviewresort.billing.model;
 
 import java.math.BigDecimal;
 
+
 public class Billing {
 
     private int reservationId;
@@ -12,6 +13,10 @@ public class Billing {
     private int nights;
     private BigDecimal pricePerNight;
     private BigDecimal totalAmount;
+    private java.math.BigDecimal subTotal;
+    private java.math.BigDecimal serviceCharge;
+    private java.math.BigDecimal tax;
+    private java.math.BigDecimal grandTotal;
 
     public int getReservationId() {
         return reservationId;
@@ -76,4 +81,17 @@ public class Billing {
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
+
+    public java.math.BigDecimal getSubTotal() { return subTotal; }
+    public void setSubTotal(java.math.BigDecimal subTotal) { this.subTotal = subTotal; }
+
+    public java.math.BigDecimal getServiceCharge() { return serviceCharge; }
+    public void setServiceCharge(java.math.BigDecimal serviceCharge) { this.serviceCharge = serviceCharge; }
+
+    public java.math.BigDecimal getTax() { return tax; }
+    public void setTax(java.math.BigDecimal tax) { this.tax = tax; }
+
+    public java.math.BigDecimal getGrandTotal() { return grandTotal; }
+    public void setGrandTotal(java.math.BigDecimal grandTotal) { this.grandTotal = grandTotal; }
+
 }
