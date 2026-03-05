@@ -319,7 +319,8 @@
         </div>
 
         <div class="quickActions">
-            <a class="action" href="${pageContext.request.contextPath}/dashboard?page=reservation">➕ Add Reservation</a>
+            <a class="action" href="${pageContext.request.contextPath}/reservation">➕ Add Reservation</a>
+            <a class="action" href="${pageContext.request.contextPath}/reservation?view=list">📋 View Reservations</a>
             <a class="action" href="${pageContext.request.contextPath}/dashboard?page=billing">🧾 Generate Bill</a>
             <a class="action" href="${pageContext.request.contextPath}/dashboard?page=reports">📌 View Reports</a>
         </div>
