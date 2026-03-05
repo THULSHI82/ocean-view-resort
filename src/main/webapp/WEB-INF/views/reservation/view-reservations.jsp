@@ -10,6 +10,23 @@
     String to = (String) request.getAttribute("to");
 %>
 
+<style>
+    .billBtn{
+        padding:8px 10px;
+        border-radius:10px;
+        border:1px solid #0f172a;
+        background:#0f172a;
+        color:#fff;
+        font-weight:700;
+        text-decoration:none;
+        font-size:12px;
+    }
+
+    .billBtn:hover{
+        background:#1e293b;
+    }
+</style>
+
 <div style="display:flex;align-items:center;justify-content:space-between;">
     <div>
         <h3 style="margin:0;">View Reservations</h3>
@@ -28,21 +45,27 @@
 
     <div>
         <label style="display:block;font-size:12px;color:#64748b;margin-bottom:6px;">Search</label>
-        <input type="text" name="q" value="<%= q == null ? "" : q %>"
-               placeholder="Customer name / phone / room number"
-               style="width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;">
+        <label>
+            <input type="text" name="q" value="<%= q == null ? "" : q %>"
+                   placeholder="Customer name / phone / room number"
+                   style="width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;">
+        </label>
     </div>
 
     <div>
         <label style="display:block;font-size:12px;color:#64748b;margin-bottom:6px;">From</label>
-        <input type="date" name="from" value="<%= from == null ? "" : from %>"
-               style="width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;">
+        <label>
+            <input type="date" name="from" value="<%= from == null ? "" : from %>"
+                   style="width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;">
+        </label>
     </div>
 
     <div>
         <label style="display:block;font-size:12px;color:#64748b;margin-bottom:6px;">To</label>
-        <input type="date" name="to" value="<%= to == null ? "" : to %>"
-               style="width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;">
+        <label>
+            <input type="date" name="to" value="<%= to == null ? "" : to %>"
+                   style="width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;">
+        </label>
     </div>
 
     <button type="submit"
@@ -62,6 +85,7 @@
             <th style="text-align:left;padding:12px;font-size:12px;color:#64748b;">Check-out</th>
             <th style="text-align:left;padding:12px;font-size:12px;color:#64748b;">Total</th>
             <th style="text-align:left;padding:12px;font-size:12px;color:#64748b;">Action</th>
+            <th style="text-align:left;padding:12px;font-size:12px;color:#64748b;">Billing</th>
         </tr>
         </thead>
         <tbody>
@@ -102,6 +126,13 @@
                         Delete
                     </button>
                 </form>
+            </td>
+
+            <td>
+                <a href="${pageContext.request.contextPath}/billing?reservationId=<%= r.get("id") %>"
+                   class="actionBtn billBtn">
+                    Generate Bill
+                </a>
             </td>
         </tr>
         <%
