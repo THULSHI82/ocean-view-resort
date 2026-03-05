@@ -18,14 +18,30 @@ public class BillingServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String reservationId = request.getParameter("reservationId");
+        // PRG messages (optional but very stable UX)
+        String error = (String) request.getSession().getAttribute("error");
+        if (error != null) {
+            request.setAttribute("error", error);
+            request.getSession().removeAttribute("error");
+        }
 
-        if (reservationId != null) {
+        String reservationIdParam = request.getParameter("reservationId");
 
-            Billing bill = billingService.calculateBill(
-                    Integer.parseInt(reservationId));
+        if (reservationIdParam != null && !reservationIdParam.isBlank()) {
+            try {
+                int reservationId = Integer.parseInt(reservationIdParam);
 
-            request.setAttribute("bill", bill);
+                Billing bill = billingService.calculateBill(reservationId);
+
+                if (bill == null) {
+                    request.setAttribute("error", "Reservation ID not found. Please check and try again.");
+                } else {
+                    request.setAttribute("bill", bill);
+                }
+
+            } catch (NumberFormatException e) {
+                request.setAttribute("error", "Invalid Reservation ID format.");
+            }
         }
 
         request.setAttribute("page", "billing");
