@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="com.oceanviewresort.auth.model.User" %>
+<%@ page import="java.util.Map" %>
+
 <%
     User user = (User) session.getAttribute("loggedUser");
     String currentPage = (String) request.getAttribute("page");
@@ -9,6 +11,11 @@
 <%
     String subPage = (String) request.getAttribute("subPage");
     if (subPage == null || subPage.isBlank()) subPage = "add";
+%>
+
+<%
+    Map<String, Object> stats = (Map<String, Object>) request.getAttribute("stats");
+    if (stats == null) stats = new java.util.HashMap<>();
 %>
 
 <!DOCTYPE html>
@@ -151,7 +158,7 @@
         /* Home stats */
         .stats{
             display:grid;
-            grid-template-columns:repeat(3, 1fr);
+            grid-template-columns:repeat(4, 1fr);
             gap:14px;
             margin-top:14px;
         }
@@ -202,7 +209,48 @@
             box-shadow:0 8px 18px rgba(0,0,0,0.08);
         }
 
+        .infoGrid{
+            margin-top:20px;
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:16px;
+        }
+
+        .infoCard{
+            background:#fff;
+            border:1px solid #e5e7eb;
+            border-radius:14px;
+            padding:16px;
+        }
+
+        .infoCard h4{
+            margin:0 0 8px 0;
+        }
+
+        .infoCard p{
+            color:#64748b;
+            font-size:14px;
+            line-height:1.6;
+        }
+
+        .infoCard ul{
+            margin:0;
+            padding-left:18px;
+            color:#64748b;
+            line-height:1.7;
+            font-size:14px;
+        }
+
+        @media(max-width:900px){
+            .infoGrid{
+                grid-template-columns:1fr;
+            }
+        }
+
         @media(max-width:1100px){
+            .stats{ grid-template-columns:1fr; }
+        }
+        @media(max-width:700px){
             .stats{ grid-template-columns:1fr; }
         }
     </style>
@@ -245,9 +293,9 @@
             💳 Billing
         </a>
 
-        <a class="nav-link <%= "reports".equals(currentPage) ? "active" : "" %>"
-           href="${pageContext.request.contextPath}/dashboard?page=reports">
-            📊 Reports
+        <a class="nav-link <%= "help".equals(currentPage) ? "active" : "" %>"
+           href="${pageContext.request.contextPath}/dashboard?page=help">
+            ❓ Help
         </a>
     </div>
 
@@ -285,11 +333,53 @@
         <jsp:include page="/WEB-INF/views/billing/view-bill.jsp" />
 
         <%
-            } case "reports" -> { %>
-        <h3>Reports</h3>
+            } case "help" -> { %>
+
+        <h3>Help & Guidelines</h3>
         <p style="color: var(--muted); margin-top:6px;">
-            Reports and analytics will appear here.
+            Quick guide for new staff members to use the Ocean View Resort system.
         </p>
+
+        <div style="margin-top:14px;display:grid;grid-template-columns:1fr;gap:12px;">
+
+            <div style="border:1px solid var(--border);border-radius:14px;padding:14px;background:#fff;">
+                <strong>1) Login</strong>
+                <div style="color:var(--muted);margin-top:6px;font-size:13px;line-height:1.6;">
+                    Enter your staff username and password. If credentials are invalid, an error message will appear.
+                </div>
+            </div>
+
+            <div style="border:1px solid var(--border);border-radius:14px;padding:14px;background:#fff;">
+                <strong>2) Add Reservation</strong>
+                <div style="color:var(--muted);margin-top:6px;font-size:13px;line-height:1.6;">
+                    Go to <b>Reservations</b> and fill customer details, choose a room, then select check-in and check-out dates.
+                    The system prevents overlapping bookings automatically.
+                </div>
+            </div>
+
+            <div style="border:1px solid var(--border);border-radius:14px;padding:14px;background:#fff;">
+                <strong>3) View / Search Reservations</strong>
+                <div style="color:var(--muted);margin-top:6px;font-size:13px;line-height:1.6;">
+                    Use search to filter by Reservation ID, customer name, phone, room number, or by date range.
+                </div>
+            </div>
+
+            <div style="border:1px solid var(--border);border-radius:14px;padding:14px;background:#fff;">
+                <strong>4) Billing & Payments</strong>
+                <div style="color:var(--muted);margin-top:6px;font-size:13px;line-height:1.6;">
+                    Generate invoices from the reservations list. Settle using Cash/Card.
+                    Once a bill is PAID, the billing button becomes disabled.
+                </div>
+            </div>
+
+            <div style="border:1px solid var(--border);border-radius:14px;padding:14px;background:#fff;">
+                <strong>5) Logout</strong>
+                <div style="color:var(--muted);margin-top:6px;font-size:13px;line-height:1.6;">
+                    Click Logout and confirm to end the session securely.
+                </div>
+            </div>
+
+        </div>
 
         <%
             } default -> { %>
@@ -300,29 +390,50 @@
 
         <div class="stats">
             <div class="stat">
-                <div class="label">Today’s Reservations</div>
-                <div class="value">0</div>
-                <div class="hint">Will update when Reservation module is connected.</div>
+                <div class="label">Total Reservations</div>
+                <div class="value"><%= stats.getOrDefault("reservations", 0) %></div>
+                <div class="hint">All reservations recorded in the system.</div>
             </div>
 
             <div class="stat">
-                <div class="label">Pending Check-ins</div>
-                <div class="value">0</div>
-                <div class="hint">Based on check-in date and status.</div>
+                <div class="label">Active Guests</div>
+                <div class="value"><%= stats.getOrDefault("guests", 0) %></div>
+                <div class="hint">Guests staying today (based on check-in/out dates).</div>
             </div>
 
             <div class="stat">
-                <div class="label">Revenue (Today)</div>
-                <div class="value">LKR 0</div>
-                <div class="hint">Calculated from billing module.</div>
+                <div class="label">Available Rooms</div>
+                <div class="value"><%= stats.getOrDefault("availableRooms", 0) %></div>
+                <div class="hint">Rooms not reserved for today.</div>
+            </div>
+
+            <div class="stat">
+                <div class="label">Total Revenue</div>
+                <div class="value">LKR <%= stats.getOrDefault("revenue", 0) %></div>
+                <div class="hint">Sum of reservation totals (billing-linked).</div>
             </div>
         </div>
 
         <div class="quickActions">
             <a class="action" href="${pageContext.request.contextPath}/reservation">➕ Add Reservation</a>
             <a class="action" href="${pageContext.request.contextPath}/reservation?view=list">📋 View Reservations</a>
-            <a class="action" href="${pageContext.request.contextPath}/dashboard?page=billing">🧾 Generate Bill</a>
-            <a class="action" href="${pageContext.request.contextPath}/dashboard?page=reports">📌 View Reports</a>
+            <a class="action" href="${pageContext.request.contextPath}/billing">🧾 Billing</a>
+            <a class="action" href="${pageContext.request.contextPath}/dashboard?page=help">❓ Help</a>
+        </div>
+
+        <div class="infoGrid">
+
+            <div class="infoCard">
+                <h4>Staff Operational Guidelines</h4>
+                <ul>
+                    <li>Use the <strong>Add Reservation</strong> section to create new bookings.</li>
+                    <li>Check room availability before confirming reservations.</li>
+                    <li>Generate invoices from the reservation list once a guest checks out.</li>
+                    <li>Use the billing module to settle payments and record the payment method.</li>
+                    <li>Refer to the Help section if assistance is needed for system usage.</li>
+                </ul>
+            </div>
+
         </div>
         <%
                 }

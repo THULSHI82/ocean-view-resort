@@ -212,9 +212,10 @@
 
         <% if (request.getAttribute("success") != null) { %>
         <div class="alert success"><%= request.getAttribute("success") %></div>
+
         <script>
             setTimeout(function() {
-                window.location.href = "dashboard.jsp";
+                window.location.href = "<%= request.getContextPath() %>/dashboard?page=home";
             }, 1500);
         </script>
         <% } %>
