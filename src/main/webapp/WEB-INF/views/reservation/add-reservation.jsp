@@ -29,6 +29,74 @@
     opacity:0;
     transform: translateY(-6px);
   }
+
+  /* Form layout improvements */
+  .formWrap{
+    width:100%;
+    max-width:100%;
+    margin-top:14px;
+  }
+
+  .formCard{
+    width:100%;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    padding:18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  }
+
+  .formGrid{
+    display:grid;
+    gap:14px;
+  }
+
+  .twoCol{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+
+  @media(max-width:900px){
+    .twoCol{ grid-template-columns:1fr; }
+  }
+
+  .fieldLabel{
+    display:block;
+    font-size:12px;
+    color:#64748b;
+    margin-bottom:6px;
+  }
+
+  .fieldInput, .fieldSelect{
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    border:1px solid #e5e7eb;
+    font-size:14px;
+  }
+
+  .primaryBtn{
+    padding:12px 16px;
+    border:none;
+    border-radius:12px;
+    background:#111827;
+    color:#fff;
+    font-weight:800;
+    cursor:pointer;
+  }
+
+  .ghostBtn{
+    padding:12px 16px;
+    border-radius:12px;
+    border:1px solid #e5e7eb;
+    background:#fff;
+    color:#111827;
+    font-weight:800;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+  }
 </style>
 
 <% if (request.getAttribute("error") != null) { %>
@@ -43,69 +111,75 @@
 </div>
 <% } %>
 
-<form method="post" action="${pageContext.request.contextPath}/reservation" style="margin-top:14px;display:grid;gap:14px;max-width:700px;">
-  <div>
-    <label style="display:block;font-size:12px;color:#64748b;margin-bottom:6px;">Customer Name</label>
-    <label>
-      <input type="text" name="customerName" placeholder="e.g., Customer Name" required
-             style="width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;">
-    </label>
-  </div>
+<div class="formWrap">
+  <div class="formCard">
+    <form method="post" action="${pageContext.request.contextPath}/reservation">
+      <div class="formGrid">
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-    <div>
-      <label style="display:block;font-size:12px;color:#64748b;margin-bottom:6px;">Phone</label>
-      <label>
-        <input type="text" name="customerPhone" placeholder="e.g., 0771234567"
-               style="width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;">
-      </label>
-    </div>
-    <div>
-      <label style="display:block;font-size:12px;color:#64748b;margin-bottom:6px;">Email</label>
-      <label>
-        <input type="email" name="customerEmail" placeholder="e.g., john@email.com"
-               style="width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;">
-      </label>
-    </div>
-  </div>
+        <div>
+          <label class="fieldLabel">Customer Name</label>
+          <label>
+            <input class="fieldInput" type="text" name="customerName" placeholder="e.g., Customer Name" required>
+          </label>
+        </div>
 
-  <div>
-    <label style="display:block;font-size:12px;color:#64748b;margin-bottom:6px;">Select Room</label>
-    <label>
-      <select name="roomId" required style="width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;">
-        <option value="">-- Select a Room --</option>
-        <% if (rooms != null) {
-          for (Room r : rooms) { %>
-        <option value="<%= r.getId() %>">
-          Room <%= r.getRoomNumber() %> | <%= r.getRoomType() %> | LKR <%= r.getPrice() %>
-        </option>
-        <% } } %>
-      </select>
-    </label>
-  </div>
+        <div class="twoCol">
+          <div>
+            <label class="fieldLabel">Phone</label>
+            <label>
+              <input class="fieldInput" type="text" name="customerPhone" placeholder="e.g., 0771234567">
+            </label>
+          </div>
+          <div>
+            <label class="fieldLabel">Email</label>
+            <label>
+              <input class="fieldInput" type="email" name="customerEmail" placeholder="e.g., john@email.com">
+            </label>
+          </div>
+        </div>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-    <div>
-      <label style="display:block;font-size:12px;color:#64748b;margin-bottom:6px;">Check-in</label>
-      <label>
-        <input type="date" name="checkIn" required
-               style="width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;">
-      </label>
-    </div>
-    <div>
-      <label style="display:block;font-size:12px;color:#64748b;margin-bottom:6px;">Check-out</label>
-      <label>
-        <input type="date" name="checkOut" required
-               style="width:100%;padding:12px;border-radius:12px;border:1px solid #e5e7eb;">
-      </label>
-    </div>
-  </div>
+        <div>
+          <label class="fieldLabel">Select Room</label>
+          <label>
+            <select class="fieldSelect" name="roomId" required>
+              <option value="">-- Select a Room --</option>
+              <% if (rooms != null) {
+                for (Room r : rooms) { %>
+              <option value="<%= r.getId() %>">
+                Room <%= r.getRoomNumber() %> | <%= r.getRoomType() %> | LKR <%= r.getPrice() %>
+              </option>
+              <% } } %>
+            </select>
+          </label>
+        </div>
 
-  <button type="submit"
-          style="padding:12px;border:none;border-radius:12px;background:#111827;color:#fff;font-weight:700;cursor:pointer;width:220px;">
-    Create Reservation
-  </button>
-</form>
+        <div class="twoCol">
+          <div>
+            <label class="fieldLabel">Check-in</label>
+            <label>
+              <input class="fieldInput" type="date" name="checkIn" required>
+            </label>
+          </div>
+          <div>
+            <label class="fieldLabel">Check-out</label>
+            <label>
+              <input class="fieldInput" type="date" name="checkOut" required>
+            </label>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-start;gap:10px;flex-wrap:wrap;">
+          <button class="primaryBtn" type="submit">Create Reservation</button>
+
+          <a class="ghostBtn" href="${pageContext.request.contextPath}/reservation?view=list">
+            View Reservations
+          </a>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
 
 <script>
   (function(){
