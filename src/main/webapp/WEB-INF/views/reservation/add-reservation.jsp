@@ -118,41 +118,53 @@
 
         <div>
           <label class="fieldLabel">Customer Name</label>
-          <input class="fieldInput" type="text" name="customerName" placeholder="e.g., Customer Name" required>
+          <label>
+            <input class="fieldInput" type="text" name="customerName" placeholder="e.g., Customer Name" required>
+          </label>
         </div>
 
         <div class="twoCol">
           <div>
             <label class="fieldLabel">Phone</label>
-            <input class="fieldInput" type="text" name="customerPhone" placeholder="e.g., 0771234567">
+            <label>
+              <input class="fieldInput" type="text" name="customerPhone" placeholder="e.g., 0771234567">
+            </label>
           </div>
           <div>
             <label class="fieldLabel">Email</label>
-            <input class="fieldInput" type="email" name="customerEmail" placeholder="e.g., john@email.com">
+            <label>
+              <input class="fieldInput" type="email" name="customerEmail" placeholder="e.g., john@email.com">
+            </label>
           </div>
         </div>
 
         <div>
           <label class="fieldLabel">Select Room</label>
-          <select class="fieldSelect" name="roomId" required>
-            <option value="">-- Select a Room --</option>
-            <% if (rooms != null) {
-              for (Room r : rooms) { %>
-            <option value="<%= r.getId() %>">
-              Room <%= r.getRoomNumber() %> | <%= r.getRoomType() %> | LKR <%= r.getPrice() %>
-            </option>
-            <% } } %>
-          </select>
+          <label>
+            <select class="fieldSelect" name="roomId" required>
+              <option value="">-- Select a Room --</option>
+              <% if (rooms != null) {
+                for (Room r : rooms) { %>
+              <option value="<%= r.getId() %>">
+                Room <%= r.getRoomNumber() %> | <%= r.getRoomType() %> | LKR <%= r.getPrice() %>
+              </option>
+              <% } } %>
+            </select>
+          </label>
         </div>
 
         <div class="twoCol">
           <div>
             <label class="fieldLabel">Check-in</label>
-            <input class="fieldInput" type="date" name="checkIn" required>
+            <label>
+              <input class="fieldInput" type="date" name="checkIn" required>
+            </label>
           </div>
           <div>
             <label class="fieldLabel">Check-out</label>
-            <input class="fieldInput" type="date" name="checkOut" required>
+            <label>
+              <input class="fieldInput" type="date" name="checkOut" required>
+            </label>
           </div>
         </div>
 
