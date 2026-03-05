@@ -95,7 +95,9 @@ public class ReservationDAO {
                    rm.room_type,
                    r.check_in,
                    r.check_out,
-                   r.total_price
+                   r.total_price,
+                   r.payment_status,
+                   r.payment_method
             FROM reservations r
             JOIN customers c ON r.customer_id = c.id
             JOIN rooms rm ON r.room_id = rm.id
@@ -116,6 +118,8 @@ public class ReservationDAO {
                 row.put("check_in", rs.getDate("check_in"));
                 row.put("check_out", rs.getDate("check_out"));
                 row.put("total_price", rs.getDouble("total_price"));
+                row.put("payment_status", rs.getString("payment_status"));
+                row.put("payment_method", rs.getString("payment_method"));
                 list.add(row);
             }
 
