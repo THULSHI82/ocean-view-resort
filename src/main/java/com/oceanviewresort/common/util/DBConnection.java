@@ -7,28 +7,28 @@ import java.sql.SQLException;
 public class DBConnection {
 
     private static DBConnection instance;
-    private Connection connection;
 
-    private DBConnection() throws SQLException {
+    private static final String URL = "jdbc:mysql://localhost:3306/ocean_view_resort?useSSL=false&serverTimezone=UTC";
+    private static final String USER = "root";
+    private static final String PASSWORD = "";
+
+    private DBConnection() {
         try {
-            String URL = "jdbc:mysql://localhost:3306/ocean_view_resort";
-            String USER = "root";
-            String PASSWORD = "";
             Class.forName("com.mysql.cj.jdbc.Driver");
-            this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new RuntimeException("MySQL Driver not found", e);
         }
     }
 
-    public static DBConnection getInstance() throws SQLException {
+    public static DBConnection getInstance() {
         if (instance == null) {
             instance = new DBConnection();
         }
         return instance;
     }
 
-    public Connection getConnection() {
-        return connection;
+    // IMPORTANT: return a NEW connection every time
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }
