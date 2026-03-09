@@ -1,116 +1,217 @@
-# Ocean View Resort – Online Room Reservation System
+# Ocean View Resort – Reservation Management System
 
-## Project Overview
+![Version](https://img.shields.io/badge/version-1.0-blue)
+![Java](https://img.shields.io/badge/java-jakarta--servlet-orange)
+![Database](https://img.shields.io/badge/database-mysql-blue)
+![License](https://img.shields.io/badge/license-academic-green)
 
-This project is developed as part of the CIS6003 Advanced Programming module.
+A web-based **Hotel Reservation Management System** developed using **Java (Jakarta Servlets & JSP)** and **MySQL**.
 
-Ocean View Resort is a web-based Online Room Reservation System designed using Java EE (Jakarta Servlets and JSP). The system follows structured software engineering principles including MVC architecture, layered design, and disciplined version control workflow.
+This project was created for the **CIS6003 Advanced Programming module** and demonstrates modern software engineering practices including **MVC architecture, layered design, validation mechanisms, and structured Git workflow.**
 
-Version 0.1 establishes the core system foundation including authentication, session security, and a modular dashboard framework.
+Final System Release: **Version 1.0**
 
 ---
 
-## Current System Features (Version 0.1)
+# Key System Features
 
-### Authentication Module
-- Secure login functionality
-- PRG (Post-Redirect-Get) pattern implementation
+### Authentication
+- Secure staff login
 - Session-based authentication
-- Access restriction using Servlet Filter
-- Logout with session invalidation and confirmation
+- Access protection using servlet filters
+- Logout with session invalidation
+- PRG pattern to prevent duplicate form submissions
 
-### Staff Dashboard Module
-- Premium sidebar-based dashboard layout
-- Dynamic navigation using request parameters (`?page=`)
-- Active navigation highlighting
-- Home overview section with operational placeholders
-- Modular structure prepared for Reservations, Billing, and Reports
+### Staff Dashboard
+- Sidebar-based navigation interface
+- Operational statistics overview
+- Quick navigation to system modules
 
----
+### Reservation Management
+- Create reservations with guest information
+- Select rooms from inventory
+- Automatic stay price calculation
+- Room availability validation
+- Reservation search and filtering
+- Reservation deletion functionality
 
-## Technology Stack
+### Billing System
+- Invoice generation using reservation ID
+- Service charge (10%) and tax (2%) calculation
+- Printable invoice layout
+- Payment settlement (Cash / Card)
+- Payment status tracking (Pending / Paid)
 
-- Java (Jakarta Servlet & JSP)
-- Apache Tomcat 11
-- Maven (WAR packaging)
-- MySQL (XAMPP)
-- IntelliJ IDEA 2025
-- GitHub (Version Control)
-
----
-
-## Architecture and Design Principles
-
-The system follows:
-
-### 1. MVC Pattern
-- Model: Java POJO classes
-- View: JSP pages
-- Controller: Servlet classes
-
-### 2. Layered (3-Tier) Architecture
-- Presentation Layer (JSP)
-- Controller Layer (Servlets)
-- Service Layer (Business logic)
-- DAO Layer (Database access)
-- Database Layer (MySQL)
-
-### 3. Design Patterns Used
-- Singleton Pattern (Database connection management)
-- PRG Pattern (Prevention of duplicate form submission)
-- Filter Pattern (Session-based access control)
-
-This structure ensures maintainability, scalability, and adherence to SOLID principles.
+### Staff Help Section
+- Guidelines for using the reservation system
+- Instructions for reservation and billing operations
 
 ---
 
-## Branching Strategy
+# Technology Stack
 
-The repository follows a structured staged deployment model:
+- **Java (Jakarta Servlets & JSP)**
+- **Apache Tomcat 11**
+- **Maven**
+- **MySQL (XAMPP)**
+- **IntelliJ IDEA**
+- **Git & GitHub**
+
+---
+
+# System Architecture
+
+The application follows a **3-Tier Layered Architecture**.
+
+### Presentation Layer
+Handles user interaction using:
+- JSP pages
+- HTML / CSS interface
+- JavaScript components
+
+### Business Logic Layer
+Implemented using Service classes:
+- `AuthService`
+- `ReservationService`
+- `BillingService`
+- `DashboardService`
+
+These services enforce business rules such as reservation validation and billing calculations.
+
+### Data Access Layer
+Database communication is handled using DAO classes:
+- `ReservationDAO`
+- `BillingDAO`
+- `RoomDAO`
+- `CustomerDAO`
+
+DAO classes isolate SQL queries from application logic to improve maintainability.
+
+---
+
+# Design Patterns Implemented
+
+The system uses several design patterns:
+
+### MVC Pattern
+Separates application components into Model, View, and Controller.
+
+### Singleton Pattern
+Used for database connection management.
+
+### Front Controller Pattern
+Centralized dashboard routing using a single servlet.
+
+### PRG Pattern (Post-Redirect-Get)
+Prevents duplicate form submission and improves request handling.
+
+---
+
+# Database Structure
+
+The system uses a **MySQL relational database**.
+
+Main tables include:
+
+| Table | Description |
+|------|-------------|
+users | Staff authentication credentials |
+customers | Guest information |
+rooms | Room inventory |
+reservations | Booking records |
+
+---
+
+# Git Workflow
+
+The repository follows a staged development workflow:
+
 
 development → qa → uat → master
 
-- Development: Active feature implementation
-- QA: Functional verification
-- UAT: Acceptance validation
-- Master: Production-ready stable version
+
+Branch roles:
+
+- **development** – active feature development
+- **qa** – feature verification
+- **uat** – acceptance testing
+- **master** – production-ready releases
 
 ---
 
-## Release Information
+# Release History
 
 ### Version 0.1
-First stable production-ready release including:
-
 - Authentication module
-- Secure session management
-- Professional dashboard framework
-- Structured Git workflow implementation
+- Dashboard framework
+
+### Version 0.2
+- Reservation management system
+
+### Version 0.3
+- Billing and payment module
+
+### Version 1.0
+Final integrated system including:
+- Authentication
+- Reservation management
+- Billing system
+- Dashboard statistics
+- Staff help documentation
 
 ---
 
-## Upcoming Modules
+# Running the Project
 
-The following modules will be implemented in future releases:
+### 1. Clone the Repository
 
-- Reservation Management
-- Billing System
-- Reporting and Analytics
-- Database enhancements (foreign keys, structured relationships)
+
+git clone <repository-url>
+
+
+### 2. Open in IntelliJ IDEA
+Import the project as a **Maven project**.
+
+### 3. Configure Apache Tomcat
+Add **Tomcat 11** as the application server.
+
+### 4. Setup Database
+
+Create MySQL database:
+
+
+ocean_view_resort
+
+
+Import the required tables.
+
+### 5. Deploy the Application
+Build and deploy the **WAR artifact** to Tomcat.
+
+### 6. Access the System
+
+
+http://localhost:8080/ocean-view-resort/login
+
 
 ---
 
-## How to Run the Project
+# Default Login Credentials
 
-1. Clone the repository
-2. Import into IntelliJ IDEA
-3. Configure Apache Tomcat 11
-4. Ensure MySQL is running with database:
-    - `ocean_view_resort`
-5. Deploy WAR artifact
-6. Access via:
-   `http://localhost:8080/<context-path>/login`
+Example staff account:
+
+
+Username: admin
+Password: admin123
+
 
 ---
 
-© 2026 Ocean View Resort – Staff Reservation Management System
+
+# Author
+
+Manaw  
+CIS6003 – Advanced Programming  
+Ocean View Resort Reservation System
+
+© 2026 Ocean View Resort
